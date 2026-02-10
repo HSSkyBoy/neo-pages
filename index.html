@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NKBE 項目集 - NeoZygisk & NPatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; }
+        .card { background: #1e293b; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); }
+    </style>
+</head>
+<body class="font-sans">
+    <nav class="p-6 border-b border-gray-700">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-tight text-blue-400">NKBE.TOP</h1>
+            <div class="space-x-4">
+                <a href="https://github.com/hsskyboy/neozygisk" class="hover:text-blue-400">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-20 text-center container mx-auto px-4">
+        <h2 class="text-5xl font-extrabold mb-4">Android 進階玩機工具</h2>
+        <p class="text-gray-400 text-xl">為性能與相容性而生的 Zygisk 與 修補方案</p>
+    </header>
+
+    <main class="container mx-auto px-4 pb-20 grid md:grid-cols-2 gap-8">
+        <div class="card p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-3xl font-bold mb-4 text-green-400">NeoZygisk</h3>
+            <p class="text-gray-300 mb-6">基於 Zygisk 的高性能實現，旨在提供更隱蔽、更穩定的模組加載環境。支持多種 Root 方案（Magisk, KernelSU, APatch）。</p>
+            <ul class="text-sm text-gray-400 mb-8 space-y-2">
+                <li>• 優化的 Ptracer 注入機制</li>
+                <li>• 低內存佔用，更快的啟動速度</li>
+                <li>• 完善的 Zygote 鉤子支持</li>
+            </ul>
+            <a href="https://github.com/hsskyboy/neozygisk/releases" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">查看 Release</a>
+        </div>
+
+        <div class="card p-8 rounded-2xl shadow-xl border border-gray-700">
+            <h3 class="text-3xl font-bold mb-4 text-purple-400">NPatch</h3>
+            <p class="text-gray-300 mb-6">新一代的 APK 修補工具，支持免 Root 環境下集成 Xposed 模組。繼承並優化了 LSPatch 的核心特性。</p>
+            <ul class="text-sm text-gray-400 mb-8 space-y-2">
+                <li>• 支持靜態與動態修補模式</li>
+                <li>• 兼容最新的 Android 系統版本</li>
+                <li>• 提供直觀的管理界面 (Manager)</li>
+            </ul>
+            <a href="https://github.com/7723mod/npatch/releases" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">查看 Release</a>
+        </div>
+    </main>
+
+    <footer class="text-center py-10 text-gray-500 border-t border-gray-800">
+        <p>&copy; 2026 NKBE. All Rights Reserved. Domain: nkbe.top</p>
+    </footer>
+</body>
+</html>
