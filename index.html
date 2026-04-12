@@ -1,57 +1,237 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NKBE 項目集 - NeoZygisk & NPatch</title>
+    <title>nkbe.top | @HSSkyBoy Workspace</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+
     <style>
-        body { background-color: #0f172a; color: #f8fafc; }
-        .card { background: #1e293b; transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); }
+        body {
+            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.2);
+        }
+
+        .filter-btn.active {
+            background-color: #38bdf8;
+            color: #0f172a;
+            font-weight: bold;
+        }
     </style>
 </head>
-<body class="font-sans">
-    <nav class="p-6 border-b border-gray-700">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold tracking-tight text-blue-400">NKBE.TOP</h1>
-            <div class="space-x-4">
-                <a href="https://github.com/hsskyboy/neozygisk" class="hover:text-blue-400">GitHub</a>
+<body class="antialiased selection:bg-sky-500 selection:text-white">
+
+    <section id="home" class="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="z-10 text-center max-w-3xl reveal">
+            <h2 class="text-sky-400 font-semibold tracking-widest uppercase mb-4 text-sm md:text-base">Welcome to the workspace of</h2>
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-white">
+                <span class="text-gradient">nkbe.top</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 font-medium mb-12">
+                Android Modder / UI Engineer / MC Developer
+            </p>
+        </div>
+
+        <div class="z-10 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl reveal delay-200">
+            <a href="https://github.com/HSSkyBoy" target="_blank" class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center gap-3 group">
+                <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </div>
+                <span class="font-semibold text-slate-300 group-hover:text-white">GitHub</span>
+            </a>
+            <a href="https://www.mcmod.cn/author/33451.html" target="_blank" class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center gap-3 group">
+                <div class="w-12 h-12 rounded-full bg-emerald-900/50 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                    <div class="grid grid-cols-2 gap-0.5 w-5 h-5">
+                        <div class="bg-current rounded-sm"></div><div class="bg-current opacity-70 rounded-sm"></div>
+                        <div class="bg-current opacity-50 rounded-sm"></div><div class="bg-current rounded-sm"></div>
+                    </div>
+                </div>
+                <span class="font-semibold text-slate-300 group-hover:text-white">MC百科</span>
+            </a>
+            <a href="https://space.bilibili.com/610722152" target="_blank" class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center gap-3 group">
+                <div class="w-12 h-12 rounded-full bg-pink-900/30 flex items-center justify-center text-pink-400 group-hover:bg-pink-500 group-hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.813 4.653h-.854l1.547-1.567a.74.74 0 1 0-1.046-1.047L14.748 4.745a7.125 7.125 0 0 0-2.748-.545c-1.037 0-2.013.226-2.854.64L6.513 2.039a.74.74 0 1 0-1.047 1.047l1.548 1.567h-.854C2.908 4.653 0 7.56 0 11.133v5.456c0 3.573 2.908 6.48 6.16 6.48h11.68c3.252 0 6.16-2.907 6.16-6.48v-5.456c0-3.573-2.908-6.48-6.16-6.48zm-11.653 11.04c-1.012 0-1.84-.83-1.84-1.84 0-1.012.83-1.84 1.84-1.84s1.84.83 1.84 1.84c0 1.01-.83 1.84-1.84 1.84zm11.68 0c-1.012 0-1.84-.83-1.84-1.84 0-1.012.83-1.84 1.84-1.84s1.84.83 1.84 1.84c0 1.01-.83 1.84-1.84 1.84z"/></svg>
+                </div>
+                <span class="font-semibold text-slate-300 group-hover:text-white">Bilibili</span>
+            </a>
+            <a href="https://t.me/NPatch" target="_blank" class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center gap-3 group">
+                <div class="w-12 h-12 rounded-full bg-blue-900/30 flex items-center justify-center pl-1 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12zm-5.744-4.836c-.237-1.116-1.554-1.66-2.583-1.22l-9.056 3.864c-1.127.48-1.116 1.944.024 2.408l2.676.992c.672.248 1.404.148 1.992-.272l4.98-3.52c.264-.184.624.148.424.392l-3.924 4.808c-.468.572-.252 1.436.444 1.74l4.584 2.008c1.068.468 2.256-.252 2.46-1.408l1.98-9.792z"/></svg>
+                </div>
+                <span class="font-semibold text-slate-300 group-hover:text-white">Telegram</span>
+            </a>
+        </div>
+
+        <a href="#portfolio" class="absolute bottom-10 z-10 opacity-70 hover:opacity-100 transition-opacity">
+            <dotlottie-player src="https://lottie.host/3c10e1d6-dc45-46b3-be7f-dcf149686794/n7M1q0mnR5.lottie" background="transparent" speed="1" style="width: 60px; height: 60px" loop autoplay></dotlottie-player>
+        </a>
+    </section>
+
+    <section id="portfolio" class="py-24 px-6 max-w-6xl mx-auto">
+        
+        <div class="mb-12 reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">My Work</h2>
+            <div class="h-1 w-20 bg-sky-500 rounded-full mb-8"></div>
+            
+            <div class="flex flex-wrap gap-3" id="filter-container">
+                <button class="filter-btn active px-5 py-2 rounded-full border border-slate-700 text-slate-300 hover:border-sky-500 transition-colors text-sm font-medium" data-filter="all">All</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-slate-700 text-slate-300 hover:border-sky-500 transition-colors text-sm font-medium" data-filter="android">Android System</button>
+                <button class="filter-btn px-5 py-2 rounded-full border border-slate-700 text-slate-300 hover:border-sky-500 transition-colors text-sm font-medium" data-filter="minecraft">Minecraft Mod</button>
             </div>
         </div>
-    </nav>
 
-    <header class="py-20 text-center container mx-auto px-4">
-        <h2 class="text-5xl font-extrabold mb-4">Android 進階玩機工具</h2>
-        <p class="text-gray-400 text-xl">為性能與相容性而生的 Zygisk 與 修補方案</p>
-    </header>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="project-grid">
+            
+            <div class="project-card android glass-card rounded-3xl p-6 reveal">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="px-3 py-1 bg-sky-500/10 text-sky-400 text-xs font-bold rounded-lg uppercase tracking-wider">Xposed / Kotlin</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">NPatch</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    免 Root 的 Xposed 框架，專注於簽名繞過與 Native 函式庫整合的底層解決方案，追求極致隱蔽性。
+                </p>
+                <a href="#" class="inline-flex items-center text-sm font-medium text-sky-400 hover:text-sky-300 transition-colors">
+                    View Project <span class="ml-1">→</span>
+                </a>
+            </div>
 
-    <main class="container mx-auto px-4 pb-20 grid md:grid-cols-2 gap-8">
-        <div class="card p-8 rounded-2xl shadow-xl border border-gray-700">
-            <h3 class="text-3xl font-bold mb-4 text-green-400">NeoZygisk</h3>
-            <p class="text-gray-300 mb-6">基於 Zygisk 的高性能實現，旨在提供更隱蔽、更穩定的模組加載環境。支持多種 Root 方案（Magisk, KernelSU, APatch）。</p>
-            <ul class="text-sm text-gray-400 mb-8 space-y-2">
-                <li>• 優化的 Ptracer 注入機制</li>
-                <li>• 低內存佔用，更快的啟動速度</li>
-                <li>• 完善的 Zygote 鉤子支持</li>
-            </ul>
-            <a href="https://github.com/hsskyboy/neozygisk/releases" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">查看 Release</a>
+            <div class="project-card android glass-card rounded-3xl p-6 reveal delay-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs font-bold rounded-lg uppercase tracking-wider">Zygisk / Root</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">NeoZygisk-Fork</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    具備防偵測強化的 Zygisk 實作分支，深度優化模組注入邏輯，提升面對高強度檢測環境的生存力。
+                </p>
+                <a href="#" class="inline-flex items-center text-sm font-medium text-sky-400 hover:text-sky-300 transition-colors">
+                    View Update <span class="ml-1">→</span>
+                </a>
+            </div>
+
+            <div class="project-card android glass-card rounded-3xl p-6 reveal delay-200">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs font-bold rounded-lg uppercase tracking-wider">Kernel / Magisk</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">OmniSched V3</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    Global Dynamic Allocation 核心優化模組，具備自訂義 WebUI 介面，動態分配系統資源以優化能效比。
+                </p>
+                <a href="#" class="inline-flex items-center text-sm font-medium text-sky-400 hover:text-sky-300 transition-colors">
+                    View Scripts <span class="ml-1">→</span>
+                </a>
+            </div>
+
+            <div class="project-card minecraft glass-card rounded-3xl p-6 reveal">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex gap-2">
+                        <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded-lg uppercase tracking-wider">Fabric</span>
+                        <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs font-bold rounded-lg uppercase tracking-wider">NeoForge</span>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">PetPhraseX</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    輕量級用戶端模組，為聊天訊息自動加上自定義「口癖」（如 "nya~"）。支援隨機抽取、短句分割處理與忽略標記。
+                </p>
+                <a href="https://www.mcmod.cn/class/16747.html" target="_blank" class="inline-flex items-center text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors">
+                    View on MC百科 <span class="ml-1">→</span>
+                </a>
+            </div>
+
+            <div class="project-card minecraft glass-card rounded-3xl p-6 reveal delay-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded-lg uppercase tracking-wider">Fabric</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">BoatFly</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                    Minecraft 模組開發與維護。針對最新 Fabric 版本 (1.21.11+) 進行 Yarn mappings 重構與功能移植。
+                </p>
+                <a href="#" class="inline-flex items-center text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors">
+                    View Project <span class="ml-1">→</span>
+                </a>
+            </div>
+
         </div>
+    </section>
 
-        <div class="card p-8 rounded-2xl shadow-xl border border-gray-700">
-            <h3 class="text-3xl font-bold mb-4 text-purple-400">NPatch</h3>
-            <p class="text-gray-300 mb-6">新一代的 APK 修補工具，支持免 Root 環境下集成 Xposed 模組。繼承並優化了 LSPatch 的核心特性。</p>
-            <ul class="text-sm text-gray-400 mb-8 space-y-2">
-                <li>• 支持靜態與動態修補模式</li>
-                <li>• 兼容最新的 Android 系統版本</li>
-                <li>• 提供直觀的管理界面 (Manager)</li>
-            </ul>
-            <a href="https://github.com/7723mod/npatch/releases" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">查看 Release</a>
-        </div>
-    </main>
-
-    <footer class="text-center py-10 text-gray-500 border-t border-gray-800">
-        <p>&copy; 2026 NKBE. All Rights Reserved. Domain: nkbe.top</p>
+    <footer class="border-t border-slate-800 py-8 text-center text-slate-500 text-sm mt-12">
+        <p>HSSkyBoy &copy; 2026. Hosted on Cloudflare Pages.</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach((el) => {
+                observer.observe(el);
+            });
+
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    projectCards.forEach(card => {
+                        if (filterValue === 'all' || card.classList.contains(filterValue)) {
+                            card.style.display = 'block';
+                            setTimeout(() => card.classList.add('active'), 50);
+                        } else {
+                            card.style.display = 'none';
+                            card.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
