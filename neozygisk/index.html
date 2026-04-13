@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoZygisk-Fork | nkbe.top</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', 'Noto Sans TC', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="antialiased selection:bg-purple-500 selection:text-white flex flex-col min-h-screen">
+    <nav class="w-full p-6 z-20 absolute top-0">
+        <a href="/" class="text-slate-400 hover:text-purple-400 transition-colors flex items-center gap-2 text-sm font-bold tracking-wider uppercase">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back to Home
+        </a>
+    </nav>
+    <main class="flex-grow flex items-center justify-center relative px-6 py-24">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="z-10 w-full max-w-3xl glass-card rounded-3xl p-8 md:p-12">
+            <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs font-bold rounded-lg uppercase tracking-wider">Zygisk</span>
+                <span class="px-3 py-1 bg-red-500/10 text-red-400 text-xs font-bold rounded-lg uppercase tracking-wider">Root / KernelSU</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">NeoZygisk-Fork</h1>
+            <div class="prose prose-invert prose-purple max-w-none text-slate-300 leading-relaxed space-y-4 mb-8">
+                <p>這是我基於原版 JingMatrix 的 NeoZygisk 專案所維護的強化分支。原專案透過 <code>ptrace</code> 實作 Zygote 注入，完美替代了 Magisk 內建的 Zygisk，並為 APatch 和 KernelSU 提供了強大的 Zygisk API 支援。</p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>防偵測強化：</strong>深度優化了模組在記憶體層級的注入邏輯，確保在面對設備虛擬化檢測（如針對 Root 環境的遊戲或銀行應用）時具備更強的隱匿能力。</li>
+                    <li><strong>底層相容：</strong>繼承了對 KernelSU 最新介面的相容性，提供穩定且不易崩潰的執行環境。</li>
+                </ul>
+            </div>
+            <div class="flex gap-4 pt-6 border-t border-slate-700/50">
+                <a href="https://github.com/HSSkyBoy/NeoZygisk/" target="_blank" class="px-6 py-3 rounded-full bg-purple-500 hover:bg-purple-900 text-white font-bold transition-colors">View Fork on GitHub</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

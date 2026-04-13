@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniSched | nkbe.top</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', 'Noto Sans TC', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="antialiased selection:bg-orange-500 selection:text-white flex flex-col min-h-screen">
+    <nav class="w-full p-6 z-20 absolute top-0">
+        <a href="/" class="text-slate-400 hover:text-orange-400 transition-colors flex items-center gap-2 text-sm font-bold tracking-wider uppercase">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back to Home
+        </a>
+    </nav>
+    <main class="flex-grow flex items-center justify-center relative px-6 py-24">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="z-10 w-full max-w-3xl glass-card rounded-3xl p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-6">
+    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded-lg uppercase tracking-wider">Fabric</span>
+</div>
+<h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">BoatFly</h1>
+<div class="prose prose-invert prose-emerald max-w-none text-slate-300 leading-relaxed space-y-4 mb-8">
+    <p>這是一項專注於 Minecraft 最新版本的模組開發與維護專案。</p>
+    <ul class="list-disc pl-5 space-y-2">
+        <li><strong>最新版適配：</strong>針對 Minecraft 1.21+ 的 Fabric 生態系統進行支援。</li>
+        <li><strong>技術實踐：</strong>執行了嚴謹的功能底層重构，確保模組跨越版本更新後的穩定性與可用性。</li>
+    </ul>
+</div>
+<div class="flex gap-4 pt-6 border-t border-slate-700/50">
+    <a href="https://www.mcmod.cn/class/23445.html" target="_blank" class="px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition-colors">View on MC百科</a>
+</div>
+        </div>
+    </main>
+</body>
+</html>
