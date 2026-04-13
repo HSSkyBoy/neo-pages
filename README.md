@@ -1,6 +1,6 @@
-# NKBE.top - Personal Workspace 🚀
+# NKBE.top - Personal Website 🚀
 
-這是 [nkbe.top](https://nkbe.top) 的原始碼存放庫，作為我的個人入口導航頁與作品集展示中心。
+這是 [nkbe.top](https://www.nkbe.top) 的原始碼存放庫，作為我的個人入口導航頁與作品集展示中心。
 <img width="588" height="323" alt="nkbe top___2026_04_12_22_52_21" src="https://github.com/user-attachments/assets/fd52e342-be4b-467a-a6a9-0904b3066dde" />
 
 
