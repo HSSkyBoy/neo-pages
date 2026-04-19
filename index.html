@@ -15,12 +15,13 @@
         }
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translate3d(0, 30px, 0);
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: opacity, transform;
         }
         .reveal.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
         }
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
@@ -40,6 +41,33 @@
             transform: translateY(-8px);
             border-color: rgba(56, 189, 248, 0.5);
             box-shadow: 0 15px 40px -10px rgba(56, 189, 248, 0.25);
+        }
+        .project-card {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+            will-change: opacity, transform;
+        }
+        .project-card.is-hiding {
+            opacity: 0;
+            transform: translate3d(0, 12px, 0);
+            pointer-events: none;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal,
+            .project-card,
+            .glass-card,
+            .filter-btn {
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+            .reveal,
+            .reveal.active,
+            .project-card,
+            .project-card.is-hiding {
+                transform: none !important;
+            }
         }
         .filter-btn.active {
             background-color: #38bdf8;
@@ -204,35 +232,61 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
-                });
-            }, { threshold: 0.1 });
+            const revealItems = document.querySelectorAll('.reveal');
 
-            document.querySelectorAll('.reveal').forEach((el) => { observer.observe(el); });
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    obs.unobserve(entry.target);
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+            revealItems.forEach((el) => observer.observe(el));
 
             const filterBtns = document.querySelectorAll('.filter-btn');
-            const projectCards = document.querySelectorAll('.project-card');
+            const projectCards = Array.from(document.querySelectorAll('.project-card'));
+
+            const showCard = (card) => {
+                card.style.display = 'block';
+                card.offsetHeight; // force reflow so the transition always runs
+                card.classList.remove('is-hiding');
+            };
+
+            const hideCard = (card) => {
+                card.classList.add('is-hiding');
+
+                const finishHide = () => {
+                    if (!card.classList.contains('is-hiding')) return;
+                    card.style.display = 'none';
+                };
+
+                card.addEventListener('transitionend', finishHide, { once: true });
+                window.setTimeout(finishHide, 500);
+            };
+
+            const applyFilter = (filterValue) => {
+                projectCards.forEach(card => {
+                    const shouldShow = filterValue === 'all' || card.classList.contains(filterValue);
+
+                    if (shouldShow) {
+                        if (card.style.display === 'none' || getComputedStyle(card).display === 'none') {
+                            showCard(card);
+                        }
+                        requestAnimationFrame(() => card.classList.remove('is-hiding'));
+                    } else {
+                        if (getComputedStyle(card).display !== 'none') {
+                            hideCard(card);
+                        }
+                    }
+                });
+            };
 
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    const filterValue = btn.getAttribute('data-filter');
-
-                    projectCards.forEach(card => {
-                        if (filterValue === 'all' || card.classList.contains(filterValue)) {
-                            card.style.display = 'block';
-                            card.classList.remove('active');
-                            setTimeout(() => card.classList.add('active'), 50);
-                        } else {
-                            card.style.display = 'none';
-                            card.classList.remove('active');
-                        }
-                    });
+                    applyFilter(btn.dataset.filter);
                 });
             });
         });
