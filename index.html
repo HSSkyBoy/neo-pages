@@ -8,6 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <style>
+        :root {
+            --anim-speed: 0.5s;
+            --anim-curve: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         body {
             font-family: 'Outfit', 'Noto Sans TC', sans-serif;
             background-color: #0f172a; 
@@ -15,8 +20,9 @@
         }
         .reveal {
             opacity: 0;
-            transform: translate3d(0, 30px, 0);
-            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translate3d(0, 20px, 0);
+            transition: opacity var(--anim-speed) var(--anim-curve), 
+                        transform var(--anim-speed) var(--anim-curve);
             will-change: opacity, transform;
         }
         .reveal.active {
@@ -35,44 +41,40 @@
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.3s var(--anim-curve), 
+                        box-shadow 0.3s var(--anim-curve), 
+                        border-color 0.3s var(--anim-curve);
         }
+
         .glass-card:hover {
             transform: translateY(-8px);
             border-color: rgba(56, 189, 248, 0.5);
             box-shadow: 0 15px 40px -10px rgba(56, 189, 248, 0.25);
         }
         .project-card {
-            opacity: 1;
-            transform: translate3d(0, 0, 0);
-            transition: opacity 0.45s ease, transform 0.45s ease;
+            transition: opacity var(--anim-speed) var(--anim-curve), 
+                        transform var(--anim-speed) var(--anim-curve);
             will-change: opacity, transform;
         }
         .project-card.is-hiding {
             opacity: 0;
-            transform: translate3d(0, 12px, 0);
+            transform: scale(0.95) translate3d(0, 10px, 0);
             pointer-events: none;
         }
         @media (prefers-reduced-motion: reduce) {
-            .reveal,
-            .project-card,
-            .glass-card,
-            .filter-btn {
-                transition-duration: 0.01ms !important;
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-            }
-            .reveal,
-            .reveal.active,
-            .project-card,
-            .project-card.is-hiding {
+            .reveal, .project-card, .glass-card {
+                transition: none !important;
                 transform: none !important;
             }
+        }
+        .filter-btn {
+            transition: all 0.3s var(--anim-curve);
         }
         .filter-btn.active {
             background-color: #38bdf8;
             color: #0f172a;
             font-weight: bold;
+            border-color: #38bdf8;
         }
         .lottie-container {
             display: flex;
@@ -232,58 +234,45 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const revealItems = document.querySelectorAll('.reveal');
+            const animSpeed = 500; 
 
+            const revealItems = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
                     if (!entry.isIntersecting) return;
                     entry.target.classList.add('active');
                     obs.unobserve(entry.target);
                 });
-            }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
             revealItems.forEach((el) => observer.observe(el));
 
             const filterBtns = document.querySelectorAll('.filter-btn');
             const projectCards = Array.from(document.querySelectorAll('.project-card'));
 
-            const showCard = (card) => {
-                card.style.display = 'block';
-                card.offsetHeight; // force reflow so the transition always runs
-                card.classList.remove('is-hiding');
-            };
-
-            const hideCard = (card) => {
-                card.classList.add('is-hiding');
-
-                const finishHide = () => {
-                    if (!card.classList.contains('is-hiding')) return;
-                    card.style.display = 'none';
-                };
-
-                card.addEventListener('transitionend', finishHide, { once: true });
-                window.setTimeout(finishHide, 500);
-            };
-
             const applyFilter = (filterValue) => {
                 projectCards.forEach(card => {
-                    const shouldShow = filterValue === 'all' || card.classList.contains(filterValue);
-
-                    if (shouldShow) {
-                        if (card.style.display === 'none' || getComputedStyle(card).display === 'none') {
-                            showCard(card);
-                        }
-                        requestAnimationFrame(() => card.classList.remove('is-hiding'));
+                    const isVisible = filterValue === 'all' || card.classList.contains(filterValue);
+                    
+                    if (isVisible) {
+                        card.style.display = 'block';
+                        requestAnimationFrame(() => {
+                            card.classList.remove('is-hiding');
+                        });
                     } else {
-                        if (getComputedStyle(card).display !== 'none') {
-                            hideCard(card);
-                        }
+                        card.classList.add('is-hiding');
+                        setTimeout(() => {
+                            if (card.classList.contains('is-hiding')) {
+                                card.style.display = 'none';
+                            }
+                        }, animSpeed);
                     }
                 });
             };
 
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
+                    if (btn.classList.contains('active')) return;
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     applyFilter(btn.dataset.filter);
