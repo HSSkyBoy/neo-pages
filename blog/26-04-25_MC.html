@@ -147,7 +147,7 @@
 
             <section class="reveal">
                 <blockquote>
-                    <p class="!mb-2 font-bold text-white">深度解析 Java 25、Unobfuscated Loom 與 Mojang 官方映射的適配細節</p>
+                    <p class="!mb-2 font-bold text-white">深度解析 Java 25、Unobfuscated Loom 與 Mojang 官方對映的適配細節</p>
                     <p class="!mb-0 text-sm text-slate-500 tracking-wide">由 Gemini 3.1 Pro 自我的 md 原稿重寫為 html，換行好像都是問題///</p>
                 </blockquote>
             </section>
@@ -155,8 +155,8 @@
             <section class="reveal">
                 <h2 id="序言">序言</h2>
                 <p>隨著 <strong>Minecraft 26.1.x</strong> 的發佈，Fabric 模組開發生態迎來了一次真正意義上的<em>分水嶺</em>。</p>
-                <p>這不只是一次例行的版本升級——而是 <strong>26.1 Fabric</strong> 所代表的<strong>工具鏈、映射體系與開發流程</strong>的整體轉向。</p>
-                <p>不僅 Java 版本躍升至 <strong>25</strong>，構建工具 <strong>Loom</strong> 的核心架構、映射機制與 GUI 系統都發生了根本性的重構。</p>
+                <p>這不只是一次例行的版本升級——而是 <strong>26.1 Fabric</strong> 所代表的<strong>工具鏈、對映體系與開發流程</strong>的整體轉向。</p>
+                <p>不僅 Java 版本躍升至 <strong>25</strong>，構建工具 <strong>Loom</strong> 的核心架構、對映機制與 GUI 系統都發生了根本性的重構。</p>
                 <p>本文將以 <code>BoatFly</code> 與 <code>PetPhraseX</code> 的完整適配過程為例，簡單說下有關本次遷移的<strong>技術細節</strong>與<strong>踩坑經驗</strong>。</p>
             </section>
 
@@ -181,7 +181,7 @@ minecraft_version = 26.1.2</code></div></pre>
 
             <section class="reveal">
                 <h3 id="12-loom-與-fabric-loader-的版本對齊">1.2 Fabric Loader 與 Loom 的版本對齊</h3>
-                <p><strong>Loom 1.15-SNAPSHOT</strong> 是適配 26.1.x 的關鍵版本。它引入了全新的編譯流程，<em>不再依賴 Yarn 映射</em>的中間層轉換。</p>
+                <p><strong>Loom 1.15-SNAPSHOT</strong> 是適配 26.1.x 的關鍵版本。它引入了全新的編譯流程，<em>不再依賴 Yarn 對映</em>的中間層轉換。</p>
                 <p>同時也建議將 <strong>Fabric Loader</strong>升級至 <strong>0.18.6+</strong>，以支援新的模組加載機制。</p>
 
                 <pre><span class="lang-label">Groovy</span><div class="code-container"><code class="language-groovy">plugins {
@@ -196,21 +196,56 @@ dependencies {
     compileOnly "net.fabricmc:fabric-loader:0.18.6"
     }</code></div></pre>
             </section>
+            <section class="reveal">
+                <h3 id="13-fabricmodjson-後設資料規範更新">1.3 fabric.mod.json 後設資料規範更新</h3>
+                <p>伴隨 Fabric Loader 0.18.6+ 的升級，模組後設資料檔案的校驗規則迎來了強約束更新，過往寬鬆的欄位宣告將直接導致模組無法載入，甚至出現啟動器校驗不透過的問題。</p>
+                <p>核心變更集中在依賴宣告、環境限定與 Java 版本約束三個維度，尤其針對 Minecraft 26.1.x 與 Java 25 的強制要求，必須在後設資料中明確宣告。</p>
+
+                <aside class="callout callout-warn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <div>
+                        <p>必須在 <code>depends</code> 中明確宣告 <code>"java": ">=25"</code>，否則 Loader 可能會直接阻斷模組載入，無任何容錯空間。</p>
+                    </div>
+                </aside>
+            </section>
 
             <section class="reveal">
-                <h2 id="第二部分：映射機制遷移">第二部分：映射機制遷移</h2>
+                <h3 id="14-ide-開發環境適配最佳化">1.4 IDE 開發環境適配最佳化</h3>
+                <p>針對 Java 25 與全新 Loom 工具鏈，主流 IDE 也需要完成對應的配置最佳化，才能避免同步失敗、原始碼對映錯亂、除錯斷點失效等問題。</p>
+                <p>以 IntelliJ IDEA 為例，核心適配步驟如下：</p>
+                <ul class="list-disc pl-6 text-slate-300 space-y-2">
+                    <li>升級 IDEA 至 2025.3+ 版本，才能獲得 Java 25 語法的完整支援與 Gradle 9.4+ 的原生相容</li>
+                    <li>在 <code>專案結構 → SDK</code> 中新增 Java 25 正式版 SDK，並將專案的 SDK、語言級別均設定為 Java 25</li>
+                    <li>在 Gradle 設定中，將「使用 Gradle 來自」設定為 <code>gradle-wrapper.properties</code>，並指定 Gradle JVM 為 Java 25</li>
+                </ul>
+            </section>
+
+            <section class="reveal">
+                <h2 id="第二部分：對映機制遷移">第二部分：對映機制遷移</h2>
+                <section class="reveal">
+                    <h3 id="21-從-yarn-到官方對映的範式變革">2.1 從 Yarn 到 Mojang 的範式變革</h3>
+                    <p>本次 26.1.x 適配最核心的變革，莫過於 Loom 1.15+ 帶來的 <strong>Unobfuscated 原生官方對映開發流程</strong>。</p>
+                    <p>過往 Fabric 模組開發的標準流程，是基於社區維護的 Yarn 命名對映編寫代碼，編譯時通過 Loom 轉換為 Intermediary 中間對映，最終在運行時匹配遊戲的混淆字節碼。</p>
+                    <p>而全新的 Unobfuscated 流程，直接基於 Mojang 官方發佈的 deobfuscation 對映進行開發，徹底移除了 Yarn 中間層的依賴：</p>
+                    <ul class="list-disc pl-6 text-slate-300 space-y-2">
+                        <li>編譯流程大幅簡化，無需執行對映轉換，構建速度將會有所提升</li>
+                        <li>命名與官方源碼完全對齊，避免了 Yarn 與官方對映的命名差異帶來的理解成本</li>
+                        <li>與 Forge 生態的命名體系完全一致，跨加載器模組開發的適配成本大幅降低</li>
+                    </ul>
+                    <p>在 <code>build.gradle</code> 中，無需再引入任何 Yarn 對映依賴，僅需保留 Minecraft 官方依賴即可完成對映配置，這也是本次工具鏈升級最具顛覆性的變化。</p>
+                </section>
 
                 <h3 id="22-大規模包名與類名變更">2.2 大規模包名與類名變更</h3>
-                <p>官方映射的引入，導致了<strong>數百個類</strong>的重命名。以下是在我專案中常出現的變更對照：</p>
+                <p>官方對映的引入，導致了<strong>數百個類</strong>的重命名。以下是在我專案中常出現的變更對照：</p>
 
-                <pre><span class="lang-label">Mapping Migration</span><div class="code-container"><code class="language-text">// 文本系統
+                <pre><span class="lang-label">Mapping Migration</span><div class="code-container"><code class="language-text">// 文本
 net.minecraft.text.Text → net.minecraft.network.chat.Component
 
-// GUI 系統
+// GUI
 net.minecraft.client.gui.screen.Screen → net.minecraft.client.gui.screens.Screen
 net.minecraft.client.gui.widget.ButtonWidget → net.minecraft.client.gui.components.Button
 
-// 渲染系統
+// 渲染
 net.minecraft.client.gui.DrawContext → net.minecraft.client.gui.GuiGraphics</code></div></pre>
             </section>
 
@@ -242,7 +277,7 @@ public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mo
             <section class="reveal">
                 <h2 id="總結">總結</h2>
                 <p>Minecraft 26.1.x 的適配雖然涉及<strong>深度的技術重構</strong>，但也為模組開發生態帶來了長期的<em>穩定性</em>與<em>可維護性</em>。</p>
-                <p>透過採用<strong>官方映射</strong>、<strong>新的 GUI API</strong> 與<strong>改進的構建流程</strong>，我們現在能編寫更清晰、更易維護的程式碼。</p>
+                <p>透過採用<strong>官方對映</strong>、<strong>新的 GUI API</strong> 與<strong>改進的構建流程</strong>，我們現在能編寫更清晰、更易維護的程式碼。</p>
             </section>
         </div>
     </article>
