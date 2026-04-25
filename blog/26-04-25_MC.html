@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0f172a">
-    <title>適配 Minecraft 26.1.x：技術遷移實錄 | nkbe.top</title>
+    <title>适配 Minecraft 26.1.x：技术迁移实录 | nkbe.top</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,7 +35,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 模組化組件樣式 */
+        /* 模组化组件样式 */
         .glass-nav {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(16px);
@@ -49,7 +49,7 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
         }
 
-        /* 動畫與進度條 */
+        /* 动画与进度条 */
         #progress-bar {
             transform-origin: 0% 50%;
             transform: scaleX(0);
@@ -67,7 +67,7 @@
             transform: translateY(0);
         }
 
-        /* Markdown 排版系統 */
+        /* Markdown 排版系统 */
         .markdown-content h1 { @apply text-4xl md:text-5xl font-extrabold text-white mb-10 leading-tight; }
         .markdown-content h2 { @apply text-2xl md:text-3xl font-bold text-white mt-20 mb-8 flex items-center gap-4; }
         .markdown-content h2::before { content: ''; @apply w-1.5 h-8 bg-orange-500 rounded-full inline-block shadow-[0_0_15px_rgba(249,115,22,0.6)]; }
@@ -79,14 +79,14 @@
         .markdown-content strong { @apply text-white font-bold; }
         .markdown-content em { @apply text-orange-300 not-italic font-semibold; }
 
-        /* 程式碼區塊優化 */
+        /* 程式码区块优化 */
         .markdown-content pre { @apply !bg-[#0a0f1d] !border !border-slate-800 !rounded-2xl !p-0 !my-12 shadow-2xl relative overflow-hidden; }
         .code-container { @apply p-6 pt-14 overflow-x-auto; }
         .markdown-content code:not(pre code) { @apply font-mono text-orange-300 bg-orange-500/10 px-2 py-0.5 rounded-md text-[0.9em] border border-orange-500/20 mx-0.5; }
         .markdown-content pre code { @apply bg-transparent p-0 text-slate-200 block leading-relaxed; }
         .lang-label { @apply absolute top-4 left-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 pointer-events-none; }
 
-        /* 提示框 (Callouts) - 使用縮小版的 w-5 h-5 圖示 */
+        /* 提示框 (Callouts) - 使用缩小版的 w-5 h-5 图示 */
         .callout { @apply flex gap-4 px-6 py-5 rounded-2xl my-8 border backdrop-blur-sm; }
         .callout-warn { @apply bg-amber-500/5 border-amber-500/30 text-amber-100/90; }
         .callout-info { @apply bg-sky-500/5 border-sky-500/30 text-sky-100/90; }
@@ -94,7 +94,7 @@
         .callout svg { @apply w-5 h-5 flex-shrink-0 mt-1; }
         .callout p { @apply !mb-0 !text-base !opacity-100; }
 
-        /* 滾動條客製化 */
+        /* 滚动条客制化 */
         ::selection { @apply bg-orange-500/30 text-orange-200; }
         ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
@@ -130,7 +130,7 @@
                 <span class="w-8 h-[1px] bg-orange-500" aria-hidden="true"></span>
                 <span class="text-orange-500 text-xs font-black uppercase tracking-[0.25em]">Version Adaptation</span>
             </div>
-            <h1 class="text-white">邁向 Minecraft 26.1.x：技術遷移實錄</h1>
+            <h1 class="text-white">迈向 Minecraft 26.1.x：技术迁移实录</h1>
             <div class="flex flex-wrap items-center gap-6 text-slate-500 text-sm font-bold tracking-wide">
                 <span class="flex items-center gap-2 px-3 py-1 bg-slate-800/40 rounded-full border border-white/5">
                     <svg class="w-3.5 h-3.5 text-orange-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
@@ -147,25 +147,25 @@
 
             <section class="reveal">
                 <blockquote>
-                    <p class="!mb-2 font-bold text-white">深度解析 Java 25、Unobfuscated Loom 與 Mojang 官方對映的適配細節</p>
-                    <p class="!mb-0 text-sm text-slate-500 tracking-wide">由 Gemini 3.1 Pro 自我的 md 原稿重寫為 html，換行好像都是問題///</p>
+                    <p class="!mb-2 font-bold text-white">深度解析 Java 25、Unobfuscated Loom 与 Mojang 官方对映的适配细节</p>
+                    <p class="!mb-0 text-sm text-slate-500 tracking-wide">由 Gemini 3.1 Pro 自我的 md 原稿重写为 html，换行好像都是问题///</p>
                 </blockquote>
             </section>
 
             <section class="reveal">
                 <h2 id="序言">序言</h2>
-                <p>隨著 <strong>Minecraft 26.1.x</strong> 的發佈，Fabric 模組開發生態迎來了一次真正意義上的<em>分水嶺</em>。</p>
-                <p>這不只是一次例行的版本升級——而是 <strong>26.1 Fabric</strong> 所代表的<strong>工具鏈、對映體系與開發流程</strong>的整體轉向。</p>
-                <p>不僅 Java 版本躍升至 <strong>25</strong>，構建工具 <strong>Loom</strong> 的核心架構、對映機制與 GUI 系統都發生了根本性的重構。</p>
-                <p>本文將以 <code>BoatFly</code> 與 <code>PetPhraseX</code> 的完整適配過程為例，簡單說下有關本次遷移的<strong>技術細節</strong>與<strong>踩坑經驗</strong>。</p>
+                <p>随着 <strong>Minecraft 26.1.x</strong> 的发布，Fabric 模组开发生态迎来了一次真正意义上的<em>分水岭</em>。</p>
+                <p>这不只是一次例行的版本升级——而是 <strong>26.1 Fabric</strong> 所代表的<strong>工具链、对映体系与开发流程</strong>的整体转向。</p>
+                <p>不仅 Java 版本跃升至 <strong>25</strong>，构建工具 <strong>Loom</strong> 的核心架构、对映机制与 GUI 系统都发生了根本性的重构。</p>
+                <p>本文将以 <code>BoatFly</code> 与 <code>PetPhraseX</code> 的完整适配过程为例，简单说下有关本次迁移的<strong>技术细节</strong>与<strong>踩坑经验</strong>。</p>
             </section>
 
             <section class="reveal">
-                <h2 id="第一部分：工具鏈與環境配置">第一部分：工具鏈與環境配置</h2>
+                <h2 id="第一部分：工具链与环境配置">第一部分：工具链与环境配置</h2>
 
-                <h3 id="11-java-版本升級至-25">1.1 Java 版本升級至</h3>
-                <p>Minecraft 26.1.x 要求最低 <strong>Java 25</strong> 作為編譯與運行環境，這不只是版本號上的遞進，更涉及 JVM 的多項新特性與性能優化。</p>
-                <p>在 <code>gradle.properties</code> 中，我們需要明確指定目標版本，如：</p>
+                <h3 id="11-java-版本升级至-25">1.1 Java 版本升级至</h3>
+                <p>Minecraft 26.1.x 要求最低 <strong>Java 25</strong> 作为编译与运行环境，这不只是版本号上的递进，更涉及 JVM 的多项新特性与性能优化。</p>
+                <p>在 <code>gradle.properties</code> 中，我们需要明确指定目标版本，如：</p>
 
                 <pre><span class="lang-label">Properties</span><div class="code-container"><code class="language-properties">org.gradle.jvmargs = -Xmx4096m -Dfile.encoding=UTF-8
 target_java_version = 25
@@ -174,69 +174,69 @@ minecraft_version = 26.1.2</code></div></pre>
                 <aside class="callout callout-warn">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     <div>
-                        <p><strong>注意：</strong>若使用 Gradle Wrapper 需升級至 <strong>9.4.0+</strong>。</p>
+                        <p><strong>注意：</strong>若使用 Gradle Wrapper 需升级至 <strong>9.4.0+</strong>。</p>
                     </div>
                 </aside>
             </section>
 
             <section class="reveal">
-                <h3 id="12-loom-與-fabric-loader-的版本對齊">1.2 Fabric Loader 與 Loom 的版本對齊</h3>
-                <p><strong>Loom 1.15-SNAPSHOT</strong> 是適配 26.1.x 的關鍵版本。它引入了全新的編譯流程，<em>不再依賴 Yarn 對映</em>的中間層轉換。</p>
-                <p>同時也建議將 <strong>Fabric Loader</strong>升級至 <strong>0.18.6+</strong>，以支援新的模組加載機制。</p>
+                <h3 id="12-loom-与-fabric-loader-的版本对齐">1.2 Fabric Loader 与 Loom 的版本对齐</h3>
+                <p><strong>Loom 1.15-SNAPSHOT</strong> 是适配 26.1.x 的关键版本。它引入了全新的编译流程，<em>不再依赖 Yarn 对映</em>的中间层转换。</p>
+                <p>同时也建议将 <strong>Fabric Loader</strong>升级至 <strong>0.18.6+</strong>，以支援新的模组加载机制。</p>
 
                 <pre><span class="lang-label">Groovy</span><div class="code-container"><code class="language-groovy">plugins {
     // 引入支援 Unobfuscated 流程的最新版 Loom 插件
     id 'net.fabricmc.fabric-loom' version '1.16-SNAPSHOT'
 }
 dependencies {
-    // 指定目標 Minecraft 版本為 26.1.2
+    // 指定目标 Minecraft 版本为 26.1.2
     minecraft "com.mojang:minecraft:26.1.2"
 
-    // 引入支援新模組加載機制的 Fabric Loader 0.18.6+
+    // 引入支援新模组加载机制的 Fabric Loader 0.18.6+
     compileOnly "net.fabricmc:fabric-loader:0.18.6"
     }</code></div></pre>
             </section>
             <section class="reveal">
-                <h3 id="13-fabricmodjson-後設資料規範更新">1.3 fabric.mod.json 後設資料規範更新</h3>
-                <p>伴隨 Fabric Loader 0.18.6+ 的升級，模組後設資料檔案的校驗規則迎來了強約束更新，過往寬鬆的欄位宣告將直接導致模組無法載入，甚至出現啟動器校驗不透過的問題。</p>
-                <p>核心變更集中在依賴宣告、環境限定與 Java 版本約束三個維度，尤其針對 Minecraft 26.1.x 與 Java 25 的強制要求，必須在後設資料中明確宣告。</p>
+                <h3 id="13-fabricmodjson-后设资料规范更新">1.3 fabric.mod.json 后设资料规范更新</h3>
+                <p>伴随 Fabric Loader 0.18.6+ 的升级，模组后设资料档案的校验规则迎来了强约束更新，过往宽松的栏位宣告将直接导致模组无法载入，甚至出现启动器校验不透过的问题。</p>
+                <p>核心变更集中在依赖宣告、环境限定与 Java 版本约束三个维度，尤其针对 Minecraft 26.1.x 与 Java 25 的强制要求，必须在后设资料中明确宣告。</p>
 
                 <aside class="callout callout-warn">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     <div>
-                        <p>必須在 <code>depends</code> 中明確宣告 <code>"java": ">=25"</code>，否則 Loader 可能會直接阻斷模組載入，無任何容錯空間。</p>
+                        <p>必须在 <code>depends</code> 中明确宣告 <code>"java": ">=25"</code>，否则 Loader 可能会直接阻断模组载入，无任何容错空间。</p>
                     </div>
                 </aside>
             </section>
 
             <section class="reveal">
-                <h3 id="14-ide-開發環境適配最佳化">1.4 IDE 開發環境適配最佳化</h3>
-                <p>針對 Java 25 與全新 Loom 工具鏈，主流 IDE 也需要完成對應的配置最佳化，才能避免同步失敗、原始碼對映錯亂、除錯斷點失效等問題。</p>
-                <p>以 IntelliJ IDEA 為例，核心適配步驟如下：</p>
+                <h3 id="14-ide-开发环境适配最佳化">1.4 IDE 开发环境适配最佳化</h3>
+                <p>针对 Java 25 与全新 Loom 工具链，主流 IDE 也需要完成对应的配置最佳化，才能避免同步失败、原始码对映错乱、除错断点失效等问题。</p>
+                <p>以 IntelliJ IDEA 为例，核心适配步骤如下：</p>
                 <ul class="list-disc pl-6 text-slate-300 space-y-2">
-                    <li>升級 IDEA 至 2025.3+ 版本，才能獲得 Java 25 語法的完整支援與 Gradle 9.4+ 的原生相容</li>
-                    <li>在 <code>專案結構 → SDK</code> 中新增 Java 25 正式版 SDK，並將專案的 SDK、語言級別均設定為 Java 25</li>
-                    <li>在 Gradle 設定中，將「使用 Gradle 來自」設定為 <code>gradle-wrapper.properties</code>，並指定 Gradle JVM 為 Java 25</li>
+                    <li>升级 IDEA 至 2025.3+ 版本，才能获得 Java 25 语法的完整支援与 Gradle 9.4+ 的原生相容</li>
+                    <li>在 <code>专案结构 → SDK</code> 中新增 Java 25 正式版 SDK，并将专案的 SDK、语言级别均设定为 Java 25</li>
+                    <li>在 Gradle 设定中，将「使用 Gradle 来自」设定为 <code>gradle-wrapper.properties</code>，并指定 Gradle JVM 为 Java 25</li>
                 </ul>
             </section>
 
             <section class="reveal">
-                <h2 id="第二部分：對映機制遷移">第二部分：對映機制遷移</h2>
+                <h2 id="第二部分：对映机制迁移">第二部分：对映机制迁移</h2>
                 <section class="reveal">
-                    <h3 id="21-從-yarn-到官方對映的範式變革">2.1 從 Yarn 到 Mojang 的範式變革</h3>
-                    <p>本次 26.1.x 適配最核心的變革，莫過於 Loom 1.15+ 帶來的 <strong>Unobfuscated 原生官方對映開發流程</strong>。</p>
-                    <p>過往 Fabric 模組開發的標準流程，是基於社區維護的 Yarn 命名對映編寫代碼，編譯時通過 Loom 轉換為 Intermediary 中間對映，最終在運行時匹配遊戲的混淆字節碼。</p>
-                    <p>而全新的 Unobfuscated 流程，直接基於 Mojang 官方發佈的 deobfuscation 對映進行開發，徹底移除了 Yarn 中間層的依賴：</p>
+                    <h3 id="21-从-yarn-到官方对映的范式变革">2.1 从 Yarn 到 Mojang 的范式变革</h3>
+                    <p>本次 26.1.x 适配最核心的变革，莫过于 Loom 1.15+ 带来的 <strong>Unobfuscated 原生官方对映开发流程</strong>。</p>
+                    <p>过往 Fabric 模组开发的标准流程，是基于社区维护的 Yarn 命名对映编写代码，编译时通过 Loom 转换为 Intermediary 中间对映，最终在运行时匹配游戏的混淆字节码。</p>
+                    <p>而全新的 Unobfuscated 流程，直接基于 Mojang 官方发布的 deobfuscation 对映进行开发，彻底移除了 Yarn 中间层的依赖：</p>
                     <ul class="list-disc pl-6 text-slate-300 space-y-2">
-                        <li>編譯流程大幅簡化，無需執行對映轉換，構建速度將會有所提升</li>
-                        <li>命名與官方源碼完全對齊，避免了 Yarn 與官方對映的命名差異帶來的理解成本</li>
-                        <li>與 Forge 生態的命名體系完全一致，跨加載器模組開發的適配成本大幅降低</li>
+                        <li>编译流程大幅简化，无需执行对映转换，构建速度将会有所提升</li>
+                        <li>命名与官方源码完全对齐，避免了 Yarn 与官方对映的命名差异带来的理解成本</li>
+                        <li>与 Forge 生态的命名体系完全一致，跨加载器模组开发的适配成本大幅降低</li>
                     </ul>
-                    <p>在 <code>build.gradle</code> 中，無需再引入任何 Yarn 對映依賴，僅需保留 Minecraft 官方依賴即可完成對映配置，這也是本次工具鏈升級最具顛覆性的變化。</p>
+                    <p>在 <code>build.gradle</code> 中，无需再引入任何 Yarn 对映依赖，仅需保留 Minecraft 官方依赖即可完成对映配置，这也是本次工具链升级最具颠覆性的变化。</p>
                 </section>
 
-                <h3 id="22-大規模包名與類名變更">2.2 大規模包名與類名變更</h3>
-                <p>官方對映的引入，導致了<strong>數百個類</strong>的重命名。以下是在我專案中常出現的變更對照：</p>
+                <h3 id="22-大规模包名与类名变更">2.2 大规模包名与类名变更</h3>
+                <p>官方对映的引入，导致了<strong>数百个类</strong>的重命名。以下是在我专案中常出现的变更对照：</p>
 
                 <pre><span class="lang-label">Mapping Migration</span><div class="code-container"><code class="language-text">// 文本
 net.minecraft.text.Text → net.minecraft.network.chat.Component
@@ -257,16 +257,16 @@ net.minecraft.client.gui.DrawContext → net.minecraft.client.gui.GuiGraphics
             </section>
 
             <section class="reveal">
-                <h2 id="第三部分：gui-系統重構">第三部分：GUI 系統重構</h2>
+                <h2 id="第三部分：gui-系统重构">第三部分：GUI 系统重构</h2>
 
-                <h3 id="31-渲染生命週期的變更">3.1 渲染生命週期的變更</h3>
-                <p>在我的專案中，最重大的 API 變更發生在 <code>Screen</code> 類。</p>
-                <p>舊版本使用 <code>render()</code>，新版本則改為 <code>extractRenderState()</code>——必須重新適應新的<em>圖形提取模式</em>。</p>
+                <h3 id="31-渲染生命周期的变更">3.1 渲染生命周期的变更</h3>
+                <p>在我的专案中，最重大的 API 变更发生在 <code>Screen</code> 类。</p>
+                <p>旧版本使用 <code>render()</code>，新版本则改为 <code>extractRenderState()</code>——必须重新适应新的<em>图形提取模式</em>。</p>
 
                 <aside class="callout callout-info">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     <div>
-                        <p><strong>提示：</strong><code>GuiGraphicsExtractor</code> 的 <code>text()</code> 預設為<strong>左對齊</strong>，不再內建居中功能，反正開發文檔裡我沒看到。</p>
+                        <p><strong>提示：</strong><code>GuiGraphicsExtractor</code> 的 <code>text()</code> 预设为<strong>左对齐</strong>，不再内建居中功能，反正开发文档里我没看到。</p>
                     </div>
                 </aside>
 
@@ -274,7 +274,7 @@ net.minecraft.client.gui.DrawContext → net.minecraft.client.gui.GuiGraphics
 public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
     super.extractRenderState(graphics, mouseX, mouseY, delta);
 
-    // 手動計算居中位置
+    // 手动计算居中位置
     int titleWidth = this.font.width(this.title);
     int centerX = (this.width - titleWidth) / 2;
     graphics.text(this.font, this.title, centerX, 10, 0xFFFFFF, true);
@@ -282,73 +282,73 @@ public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mo
 
             </section>
             <section class="reveal">
-                <h2 id="第四部分：mixin-注入體系適配要點">第四部分：Mixin 注入體系適配要點</h2>
-                <p>本次 26.1.x 版本升級中，Mixin 注入邏輯的調整，是多數模組啟動崩潰的核心誘因。</p>
-                <p>除了前文提到的類名、方法名全量變更，遊戲核心類的執行流程、位元組碼結構也有深層重構，過往的注入點會出現無效異常，甚至直接阻斷遊戲啟動。</p>
-                <p>以下為本次適配的核心規則，均來自 BoatFly 與 PetPhraseX 的實戰驗證。</p>
+                <h2 id="第四部分：mixin-注入体系适配要点">第四部分：Mixin 注入体系适配要点</h2>
+                <p>本次 26.1.x 版本升级中，Mixin 注入逻辑的调整，是多数模组启动崩溃的核心诱因。</p>
+                <p>除了前文提到的类名、方法名全量变更，游戏核心类的执行流程、位元组码结构也有深层重构，过往的注入点会出现无效异常，甚至直接阻断游戏启动。</p>
+                <p>以下为本次适配的核心规则，均来自 BoatFly 与 PetPhraseX 的实战验证。</p>
 
-                <h3 id="41-注入目標的全量重定位">4.1 注入目標的全量重定位</h3>
-                <p>官方對映體系下，Mixin 注入的核心目標，必須完全替換為 Mojang 官方的命名規範，而非簡單替換 Yarn 對映的名稱。</p>
-                <p>核心調整包含三個維度：</p>
-                <p>其一，<code>@Mixin</code> 註解的目標類，需替換為官方對映的全限定類名，不可繼續沿用 Yarn 體系的類路徑。</p>
-                <p>其二，<code>@At</code> 註解中的注入目標，無論是方法呼叫還是欄位訪問，都需同步更新為官方對映的命名與描述符。</p>
-                <p>其三，<code>@Shadow</code> 註解的欄位與方法，必須與官方對映的簽名完全一致，否則會同時出現編譯與執行期雙重異常。</p>
+                <h3 id="41-注入目标的全量重定位">4.1 注入目标的全量重定位</h3>
+                <p>官方对映体系下，Mixin 注入的核心目标，必须完全替换为 Mojang 官方的命名规范，而非简单替换 Yarn 对映的名称。</p>
+                <p>核心调整包含三个维度：</p>
+                <p>其一，<code>@Mixin</code> 注解的目标类，需替换为官方对映的全限定类名，不可继续沿用 Yarn 体系的类路径。</p>
+                <p>其二，<code>@At</code> 注解中的注入目标，无论是方法呼叫还是栏位访问，都需同步更新为官方对映的命名与描述符。</p>
+                <p>其三，<code>@Shadow</code> 注解的栏位与方法，必须与官方对映的签名完全一致，否则会同时出现编译与执行期双重异常。</p>
 
-                <h3 id="42-注入規範的強約束更新">4.2 注入規範的強約束更新</h3>
-                <p>伴隨 Loom 1.15+ 的升級，Mixin 新增了編譯期強校驗機制，過往寬鬆的注入寫法將直接導致構建失敗。</p>
-                <p>最核心的變更，是要求所有注入點必須顯式宣告 <code>require</code> 屬性，推薦強制每個注入點必須匹配到對應目標以防止靜默崩潰。</p>
-                <p>同時，介面注入、訪問器的目標類與方法，也需同步完成官方對映的替換，並嚴格按客戶端、服務端環境拆分配置，避免服務端載入客戶端專屬 Mixin 導致的崩潰。</p>
+                <h3 id="42-注入规范的强约束更新">4.2 注入规范的强约束更新</h3>
+                <p>伴随 Loom 1.15+ 的升级，Mixin 新增了编译期强校验机制，过往宽松的注入写法将直接导致构建失败。</p>
+                <p>最核心的变更，是要求所有注入点必须显式宣告 <code>require</code> 属性，推荐强制每个注入点必须匹配到对应目标以防止静默崩溃。</p>
+                <p>同时，介面注入、访问器的目标类与方法，也需同步完成官方对映的替换，并严格按客户端、服务端环境拆分配置，避免服务端载入客户端专属 Mixin 导致的崩溃。</p>
 
-                <h3 id="43-配置檔案的規範調整">4.3 配置檔案的規範調整</h3>
-                <p>Mixin 配置檔案需同步完成兩項核心調整，否則會直接導致 Mixin 無法載入。</p>
-                <p>第一，必須顯式宣告 <code>compatibilityLevel</code> 為 <code>JAVA_25</code>，確保 Mixin 適配 Java 25 的位元組碼版本。</p>
-                <p>第二，必須顯式宣告 <code>required</code> 為 <code>true</code>，明確告知 Loader 該配置為模組必需，避免載入時的警告與潛在異常。</p>
+                <h3 id="43-配置档案的规范调整">4.3 配置档案的规范调整</h3>
+                <p>Mixin 配置档案需同步完成两项核心调整，否则会直接导致 Mixin 无法载入。</p>
+                <p>第一，必须显式宣告 <code>compatibilityLevel</code> 为 <code>JAVA_25</code>，确保 Mixin 适配 Java 25 的位元组码版本。</p>
+                <p>第二，必须显式宣告 <code>required</code> 为 <code>true</code>，明确告知 Loader 该配置为模组必需，避免载入时的警告与潜在异常。</p>
             </section>
 
             <section class="reveal">
-                <h2 id="第五部分：fabric-api-核心體系變更">第五部分：Fabric API 核心體系變更</h2>
-                <p>Fabric API 針對 26.1.x 同步完成了架構重構，大量常用事件、工具類被標記為棄用甚至移除，事件的觸發時機、引數列表也有破壞性變更。</p>
+                <h2 id="第五部分：fabric-api-核心体系变更">第五部分：Fabric API 核心体系变更</h2>
+                <p>Fabric API 针对 26.1.x 同步完成了架构重构，大量常用事件、工具类被标记为弃用甚至移除，事件的触发时机、引数列表也有破坏性变更。</p>
 
-                <h3 id="51-客戶端生命週期事件重構">5.1 客戶端生命週期事件重構</h3>
-                <p>伴隨 GUI 渲染系統的重寫，客戶端核心生命週期事件也同步完成了調整。</p>
-                <p>螢幕渲染相關事件，完全對應新的 <code>extractRenderState</code> 生命週期，替換了舊版本的 <code>render</code> 相關事件，觸發時機與傳入引數均有對應調整。</p>
-                <p>客戶端 Tick、螢幕開啟關閉等核心事件，也進行了名稱空間與分類的重構，需按新的事件路徑完成註冊，否則會出現事件不生效的問題。</p>
+                <h3 id="51-客户端生命周期事件重构">5.1 客户端生命周期事件重构</h3>
+                <p>伴随 GUI 渲染系统的重写，客户端核心生命周期事件也同步完成了调整。</p>
+                <p>萤幕渲染相关事件，完全对应新的 <code>extractRenderState</code> 生命周期，替换了旧版本的 <code>render</code> 相关事件，触发时机与传入引数均有对应调整。</p>
+                <p>客户端 Tick、萤幕开启关闭等核心事件，也进行了名称空间与分类的重构，需按新的事件路径完成注册，否则会出现事件不生效的问题。</p>
 
-                <h3 id="52-聊天與文本系統適配">5.2 聊天與文本系統適配</h3>
-                <p>除了前文提到的 <code>Text</code> 到 <code>Component</code> 的類名變更，聊天訊息的事件監聽、文本元件構建 API 也有全量調整。</p>
-                <p>文本元件的構建方法，需替換為官方對映對應的靜態方法，樣式設定的流式 API 也有對應調整。</p>
-                <p>聊天訊息相關事件進行了強約束重構，新增了訊息取消機制，攔截或修改聊天訊息需按新的規範返回對應結果，否則會出現訊息重複傳送、攔截失效的問題。</p>
+                <h3 id="52-聊天与文本系统适配">5.2 聊天与文本系统适配</h3>
+                <p>除了前文提到的 <code>Text</code> 到 <code>Component</code> 的类名变更，聊天讯息的事件监听、文本元件构建 API 也有全量调整。</p>
+                <p>文本元件的构建方法，需替换为官方对映对应的静态方法，样式设定的流式 API 也有对应调整。</p>
+                <p>聊天讯息相关事件进行了强约束重构，新增了讯息取消机制，拦截或修改聊天讯息需按新的规范返回对应结果，否则会出现讯息重复传送、拦截失效的问题。</p>
 
-                <h3 id="53-輸入與按鍵繫結系統調整">5.3 輸入與按鍵繫結系統調整</h3>
-                <p>客戶端輸入處理的重構，也帶來了按鍵繫結、滑鼠鍵盤事件的對應變更。</p>
-                <p>按鍵繫結需使用新的註冊 API，而非舊版本的直接例項化註冊。</p>
-                <p>按鍵按下/釋放、滑鼠點選滾動等輸入事件，也進行了名稱空間重構，引數列表新增了視窗上下文資訊，需同步完成適配。</p>
+                <h3 id="53-输入与按键系结系统调整">5.3 输入与按键系结系统调整</h3>
+                <p>客户端输入处理的重构，也带来了按键系结、滑鼠键盘事件的对应变更。</p>
+                <p>按键系结需使用新的注册 API，而非旧版本的直接例项化注册。</p>
+                <p>按键按下/释放、滑鼠点选滚动等输入事件，也进行了名称空间重构，引数列表新增了视窗上下文资讯，需同步完成适配。</p>
             </section>
 
             <section class="reveal">
-                <h2 id="第六部分：常見踩坑與解決方案">第六部分：常見踩坑與解決方案</h2>
-                <p>在 BoatFly 與 PetPhraseX 的完整適配過程中，我們整理了多數開發者都會遇到的共性問題，對應的解決方案可大幅縮短適配週期。</p>
+                <h2 id="第六部分：常见踩坑与解决方案">第六部分：常见踩坑与解决方案</h2>
+                <p>在 BoatFly 与 PetPhraseX 的完整适配过程中，我们整理了多数开发者都会遇到的共性问题，对应的解决方案可大幅缩短适配周期。</p>
 
-                <h3 id="61-編譯與環境類問題">6.1 編譯與環境類問題</h3>
-                <p>最常見的「無效的目標發行版: 25」報錯，核心原因無非三點：Gradle 版本過低、IDE 配置的 Java SDK 版本不正確、目標版本宣告錯誤。</p>
-                <p>對應解決方案也很明確：升級 Gradle Wrapper 至 9.4.0+ 版本，在 IDE 中配置 Java 25 正式版 SDK，並將專案與 Gradle 的 JVM 均設定為 Java 25，同時確認配置檔案中的目標版本號正確。</p>
-                <p>另一類常見的依賴同步失敗問題，多是 Loom 版本與 Minecraft 版本不匹配，需使用 1.15-SNAPSHOT 及以上的 Loom 版本，才能完整支援 26.1.x 的官方對映流程。</p>
+                <h3 id="61-编译与环境类问题">6.1 编译与环境类问题</h3>
+                <p>最常见的「无效的目标发行版: 25」报错，核心原因无非三点：Gradle 版本过低、IDE 配置的 Java SDK 版本不正确、目标版本宣告错误。</p>
+                <p>对应解决方案也很明确：升级 Gradle Wrapper 至 9.4.0+ 版本，在 IDE 中配置 Java 25 正式版 SDK，并将专案与 Gradle 的 JVM 均设定为 Java 25，同时确认配置档案中的目标版本号正确。</p>
+                <p>另一类常见的依赖同步失败问题，多是 Loom 版本与 Minecraft 版本不匹配，需使用 1.15-SNAPSHOT 及以上的 Loom 版本，才能完整支援 26.1.x 的官方对映流程。</p>
 
-                <h3 id="62-執行與載入類問題">6.2 執行與載入類問題</h3>
-                <p>模組載入時提示「依賴約束不滿足」，核心是 <code>fabric.mod.json</code> 中的依賴宣告不符合新規範。</p>
-                <p>必須在依賴中顯式宣告 Java 25、對應的 Fabric Loader 與 Minecraft 版本範圍，否則 Loader 會直接阻斷模組載入，無任何容錯空間。</p>
-                <p>遊戲啟動時的「模組訪問許可權異常」，是 Java 25 強化了模組系統的訪問控制，需在執行引數中新增對應的模組開放配置，解決反射訪問的許可權問題。</p>
+                <h3 id="62-执行与载入类问题">6.2 执行与载入类问题</h3>
+                <p>模组载入时提示「依赖约束不满足」，核心是 <code>fabric.mod.json</code> 中的依赖宣告不符合新规范。</p>
+                <p>必须在依赖中显式宣告 Java 25、对应的 Fabric Loader 与 Minecraft 版本范围，否则 Loader 会直接阻断模组载入，无任何容错空间。</p>
+                <p>游戏启动时的「模组访问许可权异常」，是 Java 25 强化了模组系统的访问控制，需在执行引数中新增对应的模组开放配置，解决反射访问的许可权问题。</p>
 
-                <h3 id="63-功能與渲染類問題">6.3 功能與渲染類問題</h3>
-                <p>GUI 渲染時文本錯位、元件不顯示，多是未遷移至新的渲染生命週期，仍沿用舊的 <code>render</code> 方法，或是文本坐標計算不符合新 API 的預設規則。</p>
-                <p>需將所有螢幕渲染邏輯遷移至 <code>extractRenderState</code> 方法，手動計算文本與元件的坐標，不再依賴舊版本的內建居中功能。</p>
-                <p>Mixin 注入失效、功能不生效，需先開啟 Mixin 除錯模式，檢視詳細的注入日誌，核對注入目標的命名、描述符是否與官方對映完全一致，多數問題都來自命名的細微偏差。</p>
+                <h3 id="63-功能与渲染类问题">6.3 功能与渲染类问题</h3>
+                <p>GUI 渲染时文本错位、元件不显示，多是未迁移至新的渲染生命周期，仍沿用旧的 <code>render</code> 方法，或是文本坐标计算不符合新 API 的预设规则。</p>
+                <p>需将所有萤幕渲染逻辑迁移至 <code>extractRenderState</code> 方法，手动计算文本与元件的坐标，不再依赖旧版本的内建居中功能。</p>
+                <p>Mixin 注入失效、功能不生效，需先开启 Mixin 除错模式，检视详细的注入日志，核对注入目标的命名、描述符是否与官方对映完全一致，多数问题都来自命名的细微偏差。</p>
             </section>
 
             <section class="reveal">
-                <h2 id="總結">總結</h2>
-                <p>Minecraft 26.1.x 的適配雖然涉及<strong>深度的技術重構</strong>，但也為模組開發生態帶來了長期的<em>穩定性</em>與<em>可維護性</em>。</p>
-                <p>透過採用<strong>官方對映</strong>、<strong>新的 GUI API</strong> 與<strong>改進的構建流程</strong>，我們現在能編寫更清晰、更易維護的程式碼。</p>
+                <h2 id="总结">总结</h2>
+                <p>Minecraft 26.1.x 的适配虽然涉及<strong>深度的技术重构</strong>，但也为模组开发生态带来了长期的<em>稳定性</em>与<em>可维护性</em>。</p>
+                <p>透过采用<strong>官方对映</strong>、<strong>新的 GUI API</strong> 与<strong>改进的构建流程</strong>，我们现在能编写更清晰、更易维护的程式码。</p>
             </section>
         </div>
     </article>
@@ -357,14 +357,14 @@ public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mo
 <footer class="border-t border-slate-900 py-12 text-center text-slate-600 bg-[#080d1a] relative z-10">
     <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
         <p class="text-xs font-black uppercase tracking-[0.4em] opacity-50">Released: NkBe.top</p>
-        <p class="font-bold text-sm tracking-widest">&copy; <time datetime="2026">2026</time> 多喜樂，常安寧。</p>
+        <p class="font-bold text-sm tracking-widest">&copy; <time datetime="2026">2026</time> 多喜乐，常安宁。</p>
     </div>
 </footer>
 
 <script>
-    // 採用類似 Kotlin 的函數式與安全風格重構腳本
+    // 采用类似 Kotlin 的函数式与安全风格重构脚本
     document.addEventListener('DOMContentLoaded', () => {
-        // Kotlin 思想：封裝函數，單一職責
+        // Kotlin 思想：封装函数，单一职责
         const setupIntersectionObserver = () => {
             const observer = new IntersectionObserver((entries) => {
                 // Kotlin Style: Collection filter & forEach
@@ -381,16 +381,16 @@ public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mo
             const navbar = document.getElementById('navbar');
             let lastScroll = 0;
 
-            // 加入 passive: true 提升滾動效能
+            // 加入 passive: true 提升滚动效能
             window.addEventListener('scroll', () => {
                 const currentScroll = window.scrollY;
                 const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-                // 數學計算與空值安全 (Safe Call/Optional Chaining)
+                // 数学计算与空值安全 (Safe Call/Optional Chaining)
                 const scrollProgress = scrollHeight > 0 ? (currentScroll / scrollHeight) : 0;
                 progressBar?.style.setProperty('transform', `scaleX(${scrollProgress})`);
 
-                // 狀態判斷
+                // 状态判断
                 const isScrollingDown = currentScroll > lastScroll && currentScroll > 150;
                 navbar?.style.setProperty('transform', isScrollingDown ? 'translateY(-100%)' : 'translateY(0)');
 
@@ -398,7 +398,7 @@ public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mo
             }, { passive: true });
         };
 
-        // 啟動函數
+        // 启动函数
         setupIntersectionObserver();
         setupScrollBehavior();
     });
