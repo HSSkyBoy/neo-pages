@@ -1,4 +1,4 @@
-## 🚀 NeoZygisk-Fork Changelog
+## 🚀 NyaZygisk Changelog
 
 ### **新功能 (Features)**
 * **系統屬性偽裝 (Property Spoofing)**：支援從 `/data/adb/modules/zygisksu/spoof.prop` 載入自定義屬性，並自動隨機化 `ro.boot.vbmeta.digest` 以提升隱蔽性。
