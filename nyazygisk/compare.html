@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoZygisk 實作對比分析 | nkbe.top</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        table { border-collapse: separate; border-spacing: 0; }
+        th, td { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        th { background: rgba(15, 23, 42, 0.8); }
+        tr:last-child td { border-bottom: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-sky-500 selection:text-white relative min-h-screen pb-20">
+
+    <!-- 背景光暈 -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-sky-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-0 right-0 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none z-0"></div>
+
+    <nav class="w-full p-6 z-20 relative">
+        <a href="index.html" class="text-slate-400 hover:text-sky-400 transition-colors flex items-center gap-2 text-sm font-bold tracking-wider uppercase w-fit">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back to NyaZygisk
+        </a>
+    </nav>
+
+    <main class="relative z-10 max-w-5xl mx-auto px-6 pt-10">
+        
+        <header class="text-center mb-16">
+            <span class="px-4 py-1.5 bg-sky-500/10 text-sky-400 text-xs font-bold rounded-full uppercase tracking-wider mb-6 inline-block">Architecture Review</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">三個 NeoZygisk 實作<span class="text-gradient">對比分析</span></h1>
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                本文對比三個基於 ptrace 實現的 Zygisk 注入模組。所有專案均為 GitHub 公開倉庫，包含上游主分支、功能增強分支與實驗性重構分支。
+            </p>
+        </header>
+
+        <!-- 基本信息表格 -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                <div class="w-2 h-8 bg-sky-500 rounded-full"></div>基本信息
+            </h2>
+            <div class="glass-card rounded-2xl overflow-hidden overflow-x-auto">
+                <table class="w-full text-left text-sm md:text-base whitespace-nowrap">
+                    <thead>
+                        <tr>
+                            <th class="p-4 md:p-5 font-semibold text-slate-300 min-w-[120px]">專案</th>
+                            <th class="p-4 md:p-5 font-semibold text-sky-300 min-w-[200px]"><a href="https://github.com/JIngMatrix/NeoZygisk" target="_blank" class="hover:underline">JingMatrix/NeoZygisk</a></th>
+                            <th class="p-4 md:p-5 font-semibold text-purple-300 min-w-[200px]"><a href="https://github.com/HSSkyBoy/NyaZygisk" target="_blank" class="hover:underline">HSSkyBoy/NyaZygisk</a></th>
+                            <th class="p-4 md:p-5 font-semibold text-emerald-300 min-w-[200px]"><a href="https://github.com/maxsteeel/NeoZygisk-fork" target="_blank" class="hover:underline">maxsteeel/NeoZygisk-fork</a></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-4 md:p-5 font-medium text-slate-400">來源</td>
+                            <td class="p-4 md:p-5">Fork 自 Zygisk-Next</td>
+                            <td class="p-4 md:p-5">衍生自 JingMatrix</td>
+                            <td class="p-4 md:p-5">Fork 自 HSSkyBoy</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-4 md:p-5 font-medium text-slate-400">版本</td>
+                            <td class="p-4 md:p-5">v2.3</td>
+                            <td class="p-4 md:p-5">改名為 NyaZygisk, v2.3</td>
+                            <td class="p-4 md:p-5">v2.4-460</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-4 md:p-5 font-medium text-slate-400">主要語言</td>
+                            <td class="p-4 md:p-5">C++ 74.2%, Rust 19.6%</td>
+                            <td class="p-4 md:p-5">C++ 75.7%, Rust 18.5%</td>
+                            <td class="p-4 md:p-5">94.1% C++, 0% Rust</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-4 md:p-5 font-medium text-slate-400">目標</td>
+                            <td class="p-4 md:p-5"><span class="px-2 py-1 bg-sky-500/20 text-sky-300 rounded text-xs font-bold">穩定版本</span></td>
+                            <td class="p-4 md:p-5"><span class="px-2 py-1 bg-purple-500/20 text-purple-300 rounded text-xs font-bold">功能增強</span></td>
+                            <td class="p-4 md:p-5"><span class="px-2 py-1 bg-emerald-500/20 text-emerald-300 rounded text-xs font-bold">激進優化</span></td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="p-4 md:p-5 font-medium text-slate-400">DenyList 特性</td>
+                            <td class="p-4 md:p-5 text-sm whitespace-normal leading-relaxed">直接卸載 Zygote 掛載點 + 命名空間 (Namespace) 切換</td>
+                            <td class="p-4 md:p-5 text-sm whitespace-normal leading-relaxed">承襲上游並整合弱 Bootloader 隱藏與 ProcessFlags 共享快取</td>
+                            <td class="p-4 md:p-5 text-sm whitespace-normal leading-relaxed">採用 ReZygisk 同款自訂 Linker、純 C++ 背景守護程序 (Daemon)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 架構差異 -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                <div class="w-2 h-8 bg-purple-500 rounded-full"></div>架構差異
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- JingMatrix -->
+                <div class="glass-card p-6 md:p-8 rounded-2xl hover:-translate-y-1 transition-transform flex flex-col">
+                    <h3 class="text-xl font-bold text-sky-400 mb-6">JingMatrix (基礎上游)</h3>
+                    <ul class="space-y-4 text-sm text-slate-300 flex-grow">
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">•</span> <div><strong class="text-white">Daemon:</strong> Rust 實作</div></li>
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">•</span> <div><strong class="text-white">Loader/Injector:</strong> C++ 實作</div></li>
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">•</span> <div><strong class="text-white">初始化:</strong> 使用 <code>TMP_PATH</code> 環境變量程式化設置臨時路徑</div></li>
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">•</span> <div><strong class="text-white">ProcessFlags:</strong> 純 IPC 機制，無緩存設計，優先保證數據一致性與穩定性</div></li>
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">•</span> <div><strong class="text-white">風格:</strong> 標準 Rust STL 規範實現，注重可讀性和長期穩定性</div></li>
+                    </ul>
+                </div>
+                
+                <!-- HSSkyBoy -->
+                <div class="glass-card p-6 md:p-8 rounded-2xl hover:-translate-y-1 transition-transform border border-purple-500/30 shadow-[0_0_30px_-10px_rgba(168,85,247,0.3)] flex flex-col relative">
+                    <div class="absolute -top-3 -right-3 bg-purple-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">Enhanced</div>
+                    <h3 class="text-xl font-bold text-purple-400 mb-6">NyaZygisk (功能增強)</h3>
+                    <ul class="space-y-4 text-sm text-slate-300 flex-grow">
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">•</span> <div><strong class="text-white">Daemon & Loader:</strong> 完整繼承上游 Rust/C++ 架構，保證 100% API 兼容性</div></li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">•</span> <div><strong class="text-white">緩存優化:</strong> 新增 Shared Memory 共享內存緩存機制，基於 memfd 創建共享內存區並完成 mmap 映射，利用哈希表實現 UID->flags 映射緩存</div></li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">•</span> <div><strong class="text-white">弱 BL 隱藏:</strong> PLT hook 攔截 <code>unshare</code>、<code>property_get</code>，優先在 Zygote 階段卸載 root 掛載點。</div></li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">•</span> <div><strong class="text-white">屬性欺騙:</strong> 啟動時自動讀取 <code>spoof.prop</code>，覆寫 <code>ro.boot.*</code> 等關鍵系統屬性以免被指紋化。</div></li>
+                    </ul>
+                </div>
+
+                <!-- maxsteeel -->
+                <div class="glass-card p-6 md:p-8 rounded-2xl hover:-translate-y-1 transition-transform flex flex-col">
+                    <h3 class="text-xl font-bold text-emerald-400 mb-6">maxsteeel (實驗重構)</h3>
+                    <ul class="space-y-4 text-sm text-slate-300 flex-grow">
+                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> <div><strong class="text-white">Daemon:</strong> 完全重構為純 C++ 實現，移除所有 Rust 依賴。</div></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> <div><strong class="text-white">初始化:</strong> 廢棄 <code>TMP_PATH</code> 環境變量方案，改為硬編碼路徑實現，簡化初始化流程</div></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> <div><strong class="text-white">激進優化:</strong> 完全移除 C++ STL 依賴，替換為自定義輕量級數據結構，消除額外開銷</div></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> <div><strong class="text-white">內存與解析:</strong> 重構 ELF 加載與解析邏輯，修復上游潛在內存洩漏問題</div></li>
+                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> <div><strong class="text-white">權限修復:</strong> 統一設置 memfd 權限為 0555 避免權限異常。</div></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 代碼差異對比 -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                <div class="w-2 h-8 bg-pink-500 rounded-full"></div>關鍵程式碼差異示例
+            </h2>
+            <div class="glass-card p-6 rounded-2xl overflow-hidden">
+                <h3 class="text-lg font-bold text-white mb-4">zygiskd.rs 初始化差異</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900 rounded-xl p-4 border border-slate-700/50">
+                        <div class="text-xs text-sky-400 font-bold mb-2 uppercase tracking-wider">JingMatrix</div>
+                        <pre class="text-sm text-slate-300 font-mono whitespace-pre-wrap break-words"><code><span class="text-purple-400">static</span> TMP_PATH: OnceLock&lt;<span class="text-emerald-400">String</span>&gt; = OnceLock::<span class="text-sky-300">new</span>();
+<span class="text-slate-500">// 無 shared memory</span></code></pre>
+                    </div>
+                    <div class="bg-slate-900 rounded-xl p-4 border border-slate-700/50 relative">
+                        <div class="text-xs text-purple-400 font-bold mb-2 uppercase tracking-wider">HSSkyBoy</div>
+                        <pre class="text-sm text-slate-300 font-mono whitespace-pre-wrap break-words"><code><span class="text-purple-400">static</span> TMP_PATH: OnceLock&lt;<span class="text-emerald-400">String</span>&gt; = OnceLock::<span class="text-sky-300">new</span>();
+<span class="text-emerald-400 font-bold bg-emerald-900/30 px-1 rounded">static SHARED_MEMORY: OnceLock&lt;SharedShm&gt; = OnceLock::new();</span>
+
+<span class="text-purple-400">fn</span> <span class="text-sky-300">initialize_globals</span>() -&gt; <span class="text-emerald-400">Result</span>&lt;()&gt; {
+    <span class="text-slate-500">// ... TMP_PATH 初始化</span>
+    <span class="text-emerald-400 font-bold bg-emerald-900/30 px-1 rounded">initialize_shared_memory()?; // 新增</span>
+    <span class="text-sky-300">Ok</span>(())
+}</code></pre>
+                    </div>
+                </div>
+                <div class="mt-4 text-sm text-slate-400 italic text-center">
+                    * 註: maxsteeel 分支已將 Daemon 改為純 C++，無 zygiskd.rs。
+                </div>
+            </div>
+        </section>
+
+        <!-- 總結與建議 -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                <div class="w-2 h-8 bg-emerald-500 rounded-full"></div>總結與推薦
+            </h2>
+            <div class="glass-card p-8 rounded-3xl relative overflow-hidden">
+                <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 relative z-10">
+                    <div class="p-4 rounded-xl hover:bg-white/5 transition-colors">
+                        <h4 class="text-sky-300 text-lg font-bold mb-3 border-b border-slate-700/50 pb-2">NeoZygisk</h4>
+                        <p class="text-sm text-slate-300 mb-3"><strong class="text-white">優點:</strong> 社群活躍度高、程式碼規範、極為穩定。</p>
+                        <p class="text-sm text-slate-300 mb-3"><strong class="text-white">缺點:</strong> 純 IPC 通訊在高頻查詢時有額外開銷，且兩者均依賴 Rust 工具鏈。</p>
+                        <p class="text-sm text-sky-400 font-medium">👉 推薦: 一般使用者、生產環境、穩定性優先。</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-purple-500/5 border border-purple-500/20">
+                        <h4 class="text-purple-300 text-lg font-bold mb-3 border-b border-purple-500/20 pb-2">NyaZygisk</h4>
+                        <p class="text-sm text-slate-300 mb-3"><strong class="text-white">優點:</strong> 性能優化顯著，保留 Rust 的型別安全特性。</p>
+                        <p class="text-sm text-slate-300 mb-3"><strong class="text-white">缺點:</strong> 引入了共享內存與屬性欺騙等新特性，架構更複雜。</p>
+                        <p class="text-sm text-purple-400 font-medium">👉 推薦: 一般使用者、生產環境、高效能優先。</p>
+                    </div>
+                    <div class="p-4 rounded-xl hover:bg-white/5 transition-colors">
+                        <h4 class="text-emerald-300 text-lg font-bold mb-3 border-b border-slate-700/50 pb-2">NeoZygisk-Fork</h4>
+                        <p class="text-sm text-slate-300 mb-3"><strong class="text-white">優點:</strong> 極致效能、無 Rust 依賴、體積最精簡。</p>
+                        <p class="text-sm text-slate-300 mb-3"><strong class="text-white">缺點:</strong> 程式碼可讀性較低，維護難度高，社群支援少。</p>
+                        <p class="text-sm text-emerald-400 font-medium">👉 推薦: 極致性能追求者、開發研究。</p>
+                    </div>
+                </div>
+                <div class="p-6 bg-slate-900/80 rounded-2xl border border-slate-700 text-center relative z-10">
+                    <div class="text-slate-300 text-lg leading-relaxed font-medium flex flex-col gap-2">
+                        <span>如果您追求「穩定好用」，選 <strong class="text-sky-400 text-xl mx-1">NeoZygisk</strong></span>
+                        <span>如果您需要「隱藏性與性能平衡」，選 <strong class="text-purple-400 text-xl mx-1">NyaZygisk</strong></span>
+                        <span>如果您有「極致精簡癖」，可以嘗試 <strong class="text-emerald-400 text-xl mx-1">NeoZygisk-Fork</strong></span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-slate-500 text-sm">
+                由 NKBe 撰寫，Gemini 3.1 Pro 設計與編碼
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
