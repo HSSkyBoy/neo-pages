@@ -3,6 +3,7 @@
 ### **新功能 (Features)**
 * **系統屬性偽裝 (Property Spoofing)**：支援從 `/data/adb/modules/zygisksu/spoof.prop` 載入自定義屬性，並自動隨機化 `ro.boot.vbmeta.digest` 以提升隱蔽性。
 * **增強 Zygote 痕跡清理**：將 Zygote 卸載檢查機制增加至最多 5 輪循環，解決因執行時機（Timing issue）導致多模組環境下清理不全的問題。
+* **支援 OneUI 8.5**：看Github去
 
 ### **效能優化 (Performance)**
 * **共享記憶體快取 (Shared Memory Cache)**：引入 memfd 支援的共享記憶體快取機制，加速 `ProcessFlags` 查找並避免重複 IPC 通訊，提升進程標誌獲取效能。
@@ -24,3 +25,5 @@
 ---
 
 **比較基準：** `de38c62` (JingMatrix) -> `4f6cfcf96` (HSSkyBoy)
+
+新的沒想法，等有時間再寫吧
