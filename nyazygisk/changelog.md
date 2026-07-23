@@ -1,29 +1,57 @@
-## 🚀 NyaZygisk Changelog
+## NyaZygisk v2.3-313
 
-### **新功能 (Features)**
-* **系統屬性偽裝 (Property Spoofing)**：支援從 `/data/adb/modules/zygisksu/spoof.prop` 載入自定義屬性，並自動隨機化 `ro.boot.vbmeta.digest` 以提升隱蔽性。
-* **增強 Zygote 痕跡清理**：將 Zygote 卸載檢查機制增加至最多 5 輪循環，解決因執行時機（Timing issue）導致多模組環境下清理不全的問題。
-* **支援 OneUI 8.5**：看Github去
+Release date: 2026-07-23
 
-### **效能優化 (Performance)**
-* **共享記憶體快取 (Shared Memory Cache)**：引入 memfd 支援的共享記憶體快取機制，加速 `ProcessFlags` 查找並避免重複 IPC 通訊，提升進程標誌獲取效能。
-* **零配置/零分配解析 (Zero-allocation)**：
-    * 於 `injector` 中引入 `getdents64` 系統調用取代 `readdir`，減少堆記憶體分配。
-    * 使用 `std::string_view` 與自定義 `fast_atoi` 解析器重構 `mount_info` 處理流程，大幅降低 CPU 開銷。
-* **Hook 邏輯優化**：在 `strdup` Hook 中加入首字快速匹配檢查，優化熱點路徑效能。
+This release is compared against upstream `JingMatrix/NeoZygisk v2.3` and summarizes the additions and improvements included in the fork build `NyaZygisk-v2.3-313-2dd5483-release.zip`.
 
-### **修復與改進 (Fixes & Refactors)**
-* **專案更名**：將專案名稱從 `NeoZygisk` 更新為 `NyaZygisk`，更新 CI 配置、Issue 模板及相關文件中的品牌名稱。
-* **執行緒安全強化**：使用 `std::atomic` 與 `compare_exchange_strong` 重構 Zygote Hook 邏輯，修復潛在的競態條件（Race conditions）。
-* **穩定性修復**：
-    * 修復 `property_get` 在卸載 PLT 備份時缺少正確中斷條件的邏輯錯誤。
-    * 修復 `/dev/urandom` 檔案描述符（FD）洩漏問題。
-* **環境相容性**：
-    * `maxKsuVersion` 提升至 **50000**。
-    * CI 流程切換至 Zulu JDK 21 並更新 Android Build Tools 至 36.1.0。
+### Main updates compared with upstream JM v2.3
+
+#### Hiding and spoofing
+
+* Added `spoof.prop` property spoofing, loading custom properties from `/data/adb/modules/zygisksu/spoof.prop`.
+* Randomized `ro.boot.vbmeta.digest` to reduce direct environment fingerprint matching.
+* Strengthened Zygote trace cleanup with repeated cleanup passes and additional edge-case handling.
+* Improved font and resource overlay unmount handling to avoid failures caused by direct unmounts.
+
+#### Compatibility and stability
+
+* Added OneUI 8.5 `forkAndSpecialize` support.
+* Added Android 7.1 compatibility fixes.
+* Added support for BTI (Branch Target Identification) enabled devices.
+* Skip module loading when the daemon is unreachable, reducing false detection and instability in isolated processes.
+* Fixed `TMP_PATH` leaking into app processes.
+* Fixed stability issues related to anonymous memory remapping and shared-cache ordering.
+
+#### Performance and low-level improvements
+
+* Added a memfd shared-memory cache for `ProcessFlags` to reduce repeated IPC overhead.
+* Refactored parts of the injector using `getdents64`, `std::string_view`, and a custom fast parser to reduce configuration and CPU overhead.
+* Optimized file-descriptor operations, PLT hook hot paths, and property loading.
+* Improved thread safety and internal consistency in Zygote hooks.
+
+#### User experience and module features
+
+* Added a WebUI for displaying module operation status.
+* Added root implementation detection to the status display.
+* Added an anonymous-memory toggle.
+* Added a banner image URL for KSUN module display.
+
+#### Project and build maintenance
+
+* Renamed the project from `NeoZygisk` to `NyaZygisk`.
+* Updated `updateJson` to point to the new site path.
+* Migrated the build to Gradle 9 and replaced the old `rust-android` flow with `cargo-ndk`.
+* Updated CI and Telegram release workflows and their message formatting.
+
+### Incremental changes from asset 302 to asset 313
+
+* Added the KSUN banner image URL.
+* Refactored the font workaround into an fd-aware Zygote detach flow.
+* Hardened anonymous-memory remapping and shared-cache ordering.
+* Prevented `TMP_PATH` from leaking into app processes again.
+* Added BTI device support.
+* Abort direct Zygote unmount when resource overlays are present, avoiding failures in that scenario.
 
 ---
 
-**比較基準：** `de38c62` (JingMatrix) -> `4f6cfcf96` (HSSkyBoy)
-
-新的沒想法，等有時間再寫吧
+Comparison range: `ea4aa9df` (`JingMatrix/NeoZygisk v2.3`) -> `2dd5483b` (`HSSkyBoy/NyaZygisk v2.3-313`)
