@@ -1,6 +1,5 @@
 {
-  "source": "neo-pages",
-  "sourceUrl": "https://gh-proxy.org/https://raw.githubusercontent.com/HSSkyBoy/neo-pages/main/version.json",
+  "sourceUrl": "https://www.nkbe.top/api/version",
   "service": "granny-gelin",
   "status": "active",
   "latest": 30,

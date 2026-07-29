@@ -1,0 +1,7 @@
+name = "neo-pages"
+pages_build_output_dir = "."
+compatibility_date = "2026-07-29"
+
+[[kv_namespaces]]
+binding = "GRANNY_VERSION_STATS"
+id = "3b27114d0b3a425583d53ff1f29da08e"
