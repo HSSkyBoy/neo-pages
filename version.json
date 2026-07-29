@@ -1,4 +1,6 @@
 {
+  "schema": "nkbe-version-policy/v1",
+  "source": "neo-pages",
   "sourceUrl": "https://www.nkbe.top/api/version",
   "service": "granny-gelin",
   "status": "active",

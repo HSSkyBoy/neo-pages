@@ -1,5 +1,9 @@
 const CURRENT_VERSION = 30;
 const STATS_BINDING = "GRANNY_VERSION_STATS";
+const POLICY_SCHEMA = "nkbe-version-policy/v1";
+const POLICY_SOURCE = "neo-pages";
+const POLICY_URL = "https://www.nkbe.top/api/version";
+const POLICY_SERVICE = "granny-gelin";
 
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -23,8 +27,10 @@ export async function onRequestGet({ env }) {
   const kv = env[STATS_BINDING];
   if (!kv) {
     return json({
-      sourceUrl: "https://www.nkbe.top/api/version",
-      service: "granny-gelin",
+      schema: POLICY_SCHEMA,
+      source: POLICY_SOURCE,
+      sourceUrl: POLICY_URL,
+      service: POLICY_SERVICE,
       status: "storage_unavailable",
     }, 503);
   }
@@ -34,8 +40,10 @@ export async function onRequestGet({ env }) {
   const todayConnections = await increment(kv, `stats:connections:${day}`);
 
   return json({
-    sourceUrl: "https://www.nkbe.top/api/version",
-    service: "granny-gelin",
+    schema: POLICY_SCHEMA,
+    source: POLICY_SOURCE,
+    sourceUrl: POLICY_URL,
+    service: POLICY_SERVICE,
     status: "active",
     latest: CURRENT_VERSION,
     issuedAt: new Date().toISOString(),
