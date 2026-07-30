@@ -1,4 +1,4 @@
-const CURRENT_VERSION = 30;
+const CURRENT_VERSION = 31;
 const STATS_BINDING = "GRANNY_VERSION_STATS";
 const POLICY_SCHEMA = "nkbe-version-policy/v1";
 const POLICY_SOURCE = "neo-pages";
