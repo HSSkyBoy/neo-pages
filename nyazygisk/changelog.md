@@ -30,4 +30,4 @@ This release is based on [JingMatrix/NeoZygisk commit `4f681671`](https://github
 
 ---
 
-Comparison range: [`4f681671`](https://github.com/JingMatrix/NeoZygisk/commit/4f681671b13b87643b3debd3b28c1787eb146a6d) (upstream NeoZygisk) -> NyaZygisk v2.4-316.
+Comparison range: [`4f681671`](https://github.com/JingMatrix/NeoZygisk/commit/4f681671b13b87643b3debd3b28c1787eb146a6d) -> NyaZygisk v2.4-316.
