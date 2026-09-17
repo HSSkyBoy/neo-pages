@@ -1,0 +1,62 @@
+﻿{
+  "version": 1,
+  "updated_at": "2026-09-17T23:54:00Z",
+  "emojis": [
+    {
+      "id": "apple",
+      "name": "Apple (iOS)",
+      "version": 1,
+      "preview": "https://www.nkbe.top/emojis/previews/apple.png",
+      "url": "https://www.nkbe.top/api/emoji/apple.ttf"
+    },
+    {
+      "id": "google",
+      "name": "Google (Noto Color)",
+      "version": 1,
+      "preview": "https://www.nkbe.top/emojis/previews/google.png",
+      "url": "https://www.nkbe.top/api/emoji/google.ttf"
+    },
+    {
+      "id": "twemoji",
+      "name": "Twitter (Twemoji)",
+      "version": 1,
+      "preview": "https://www.nkbe.top/emojis/previews/twemoji.png",
+      "url": "https://www.nkbe.top/api/emoji/twemoji.ttf"
+    },
+    {
+      "id": "fluent",
+      "name": "Microsoft (Fluent)",
+      "version": 1,
+      "preview": "https://www.nkbe.top/emojis/previews/fluent.png",
+      "url": "https://www.nkbe.top/api/emoji/fluent.ttf"
+    },
+    {
+      "id": "samsung",
+      "name": "Samsung (One UI)",
+      "version": 1,
+      "preview": "https://www.nkbe.top/emojis/previews/samsung.png",
+      "url": "https://www.nkbe.top/api/emoji/samsung.ttf"
+    },
+    {
+      "id": "harmony",
+      "name": "HarmonyOS Emoji",
+      "version": 1,
+      "preview": "https://www.nkbe.top/emojis/previews/harmony.png",
+      "url": "https://www.nkbe.top/api/emoji/harmony.ttf"
+    },
+    {
+      "id": "joypixels",
+      "name": "JoyPixels",
+      "version": 1,
+      "preview": "https://www.nkbe.top/emojis/previews/joypixels.png",
+      "url": "https://www.nkbe.top/api/emoji/joypixels.ttf"
+    },
+    {
+      "id": "blob",
+      "name": "Blobmoji",
+      "version": 1,
+      "preview": "https://www.nkbe.top/emojis/previews/blob.png",
+      "url": "https://www.nkbe.top/api/emoji/blob.ttf"
+    }
+  ]
+}

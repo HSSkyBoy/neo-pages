@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m http.server 8080)",
+      "Bash(npx --yes sharp --help)",
+      "Bash(ffmpeg -version)",
+      "Bash(ffmpeg -y -i \"E:/GitHubRepo/neo-pages/images/avatar.webp\" -vf \"scale=280:280:force_original_aspect_ratio=1:flags=lanczos\" -q:v 60 \"E:/GitHubRepo/neo-pages/images/avatar.webp\")",
+      "Bash(ffmpeg -y -i \"E:/GitHubRepo/neo-pages/images/avatar.webp\" -vf \"scale=280:280:force_original_aspect_ratio=1:flags=lanczos,crop=280:280\" -q:v 65 \"E:/GitHubRepo/neo-pages/images/avatar_small.webp\")"
+    ]
+  }
+}
